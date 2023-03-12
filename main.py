@@ -29,7 +29,7 @@ def user_pick(user: int):
           f"3: scissor")
 
     try:
-        x = int(input(f"player{user} : pick"))
+        x = int(input(f"player {user} : pick"))
 
         if x not in (1, 2, 3):
             print("error: number is not in range ", file=sys.stderr)
@@ -78,6 +78,15 @@ def computer():
         pick_1 = random.randrange(1, 3)
         pick_2 = user_pick(2)
         x = pick_compare(pick_1, pick_2)
+
+        if x == 0:
+            print("draw")
+        if x == 1:
+            print("bot")
+            wins_player_1 += 1
+        if x == 2:
+            print("player 2")
+            wins_player_2 += 1
 
         if wins_player_1 == 3:
             print("bot wins")
