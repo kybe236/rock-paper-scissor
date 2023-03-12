@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 import time
 
@@ -22,8 +23,29 @@ def mode():
         mode()
 
 
+def user_pick(user: int):
+    print(f"1: rock"
+          f"2: paper"
+          f"3. scissor")
+
+    try:
+        x = int(input(f"player{user} : pick"))
+
+        if x not in (1, 2, 3):
+            print("error: number is not in range ", file=sys.stderr)
+            time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
+            user_pick(user)
+
+        return x
+
+    except Exception as ex:
+        print(f"error: {ex}", file=sys.stderr)
+        user_pick(user)
+
+
 def computer():
-    pass
+    pick_1 = random.randrange(1, 3)
+    print(pick_1)
 
 
 def multiplayer():
