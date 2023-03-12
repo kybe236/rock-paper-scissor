@@ -1,9 +1,6 @@
 import os
-import random
 import sys
 import time
-
-random.random()
 
 
 def mode():
@@ -17,6 +14,8 @@ def mode():
             print("error: number is not in range ", file=sys.stderr)
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
             mode()
+
+        return x
 
     except Exception as ex:
         print(f"error: {ex}", file=sys.stderr)
