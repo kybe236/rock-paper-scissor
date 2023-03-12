@@ -1,4 +1,6 @@
+import os
 import random
+import time
 import lib
 import signal
 import sys
@@ -57,29 +59,6 @@ def multiplayer():
             lib.print_with_sep("player 2 wins")
 
 
-def online():
-    wins_player_1 = 0
-    wins_player_2 = 0
-    while (wins_player_1 < 3) and (wins_player_2 < 3):
-        pick_1 = lib.user_pick(1)
-        pick_2 = lib.user_pick(2)
-        x = lib.pick_compare(pick_1, pick_2)
-
-        if x == 0:
-            lib.print_with_sep("draw")
-        if x == 1:
-            lib.print_with_sep("player 1")
-            wins_player_1 += 1
-        if x == 2:
-            lib.print_with_sep("player 2")
-            wins_player_2 += 1
-
-        if wins_player_1 == 3:
-            lib.print_with_sep("player 1 wins")
-        if wins_player_2 == 3:
-            lib.print_with_sep("player 2 wins")
-
-
 game_mode = lib.mode()
 
 match game_mode:
@@ -87,5 +66,3 @@ match game_mode:
         computer()
     case 2:
         multiplayer()
-    case 3:
-        online()
