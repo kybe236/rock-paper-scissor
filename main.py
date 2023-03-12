@@ -6,7 +6,7 @@ import time
 def mode():
     try:
         x = int(input(f"computer: 1{os.linesep}"
-                      f"two player: 2{os.linesep}"
+                      f"multiplayer: 2{os.linesep}"
                       f"online: 3{os.linesep}"
                       f"enter number: "))
 
@@ -22,15 +22,15 @@ def mode():
         mode()
 
 
-def mode_1():
+def computer():
     pass
 
 
-def mode_2():
+def multiplayer():
     pass
 
 
-def mode_3():
+def online():
     pass
 
 
@@ -38,8 +38,8 @@ game_mode = mode()
 
 match game_mode:
     case 1:
-        mode_1()
+        computer()
     case 2:
-        mode_2()
+        multiplayer()
     case 3:
-        mode_3()
+        online()
