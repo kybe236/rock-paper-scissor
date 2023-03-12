@@ -1,5 +1,14 @@
 import random
 import lib
+import signal
+import sys
+
+
+def signal_handler(_sign, _frame):
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
 
 
 def computer():
