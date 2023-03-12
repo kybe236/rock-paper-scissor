@@ -2,6 +2,7 @@ import os
 import random
 import sys
 import time
+import getpass
 
 
 def mode():
@@ -29,7 +30,7 @@ def user_pick(user: int):
           f"3: scissor")
 
     try:
-        x = int(input(f"player {user} : pick"))
+        x = int(getpass.getpass(f"player {user} : "))
 
         if x not in (1, 2, 3):
             print("error: number is not in range ", file=sys.stderr)
@@ -95,7 +96,26 @@ def computer():
 
 
 def multiplayer():
-    pass
+    wins_player_1 = 0
+    wins_player_2 = 0
+    while (wins_player_1 < 3) and (wins_player_2 < 3):
+        pick_1 = user_pick(1)
+        pick_2 = user_pick(2)
+        x = pick_compare(pick_1, pick_2)
+
+        if x == 0:
+            print("draw")
+        if x == 1:
+            print("player 1")
+            wins_player_1 += 1
+        if x == 2:
+            print("player 2")
+            wins_player_2 += 1
+
+        if wins_player_1 == 3:
+            print("player 1 wins")
+        if wins_player_2 == 3:
+            print("player 2 wins")
 
 
 def online():
