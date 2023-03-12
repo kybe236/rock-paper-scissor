@@ -8,7 +8,7 @@ import getpass
 def mode():
     try:
         x = int(input(f"computer: 1{os.linesep}"
-                      f"multiplayer: 2{os.linesep}"
+                      f"multiplayer(2 player): 2{os.linesep}"
                       f"online: 3{os.linesep}"
                       f"enter number: "))
 
