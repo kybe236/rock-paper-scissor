@@ -9,7 +9,7 @@ def mode():
     try:
         x = int(input(f"computer: 1{os.linesep}"
                       f"multiplayer(2 player): 2{os.linesep}"
-                      f"online: 3{os.linesep}"
+                      f"online(not working): 3{os.linesep}"
                       f"enter number: "))
 
         if x not in (1, 2, 3):
@@ -119,7 +119,26 @@ def multiplayer():
 
 
 def online():
-    pass
+    wins_player_1 = 0
+    wins_player_2 = 0
+    while (wins_player_1 < 3) and (wins_player_2 < 3):
+        pick_1 = user_pick(1)
+        pick_2 = user_pick(2)
+        x = pick_compare(pick_1, pick_2)
+
+        if x == 0:
+            print("draw")
+        if x == 1:
+            print("player 1")
+            wins_player_1 += 1
+        if x == 2:
+            print("player 2")
+            wins_player_2 += 1
+
+        if wins_player_1 == 3:
+            print("player 1 wins")
+        if wins_player_2 == 3:
+            print("player 2 wins")
 
 
 game_mode = mode()
