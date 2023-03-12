@@ -11,18 +11,18 @@ def computer():
         x = lib.pick_compare(pick_1, pick_2)
 
         if x == 0:
-            print("draw")
+            lib.print_with_sep("draw")
         if x == 1:
-            print("bot")
+            lib.print_with_sep("bot")
             wins_player_1 += 1
         if x == 2:
-            print("player 2")
+            lib.print_with_sep("player 2")
             wins_player_2 += 1
 
         if wins_player_1 == 3:
-            print("bot wins")
+            lib.print_with_sep("bot wins")
         if wins_player_2 == 3:
-            print("player wins")
+            lib.print_with_sep("player wins")
 
 
 def multiplayer():
@@ -34,18 +34,18 @@ def multiplayer():
         x = lib.pick_compare(pick_1, pick_2)
 
         if x == 0:
-            print("draw")
+            lib.print_with_sep("draw")
         if x == 1:
-            print("player 1")
+            lib.print_with_sep("player 1")
             wins_player_1 += 1
         if x == 2:
-            print("player 2")
+            lib.print_with_sep("player 2")
             wins_player_2 += 1
 
         if wins_player_1 == 3:
-            print("player 1 wins")
+            lib.print_with_sep("player 1 wins")
         if wins_player_2 == 3:
-            print("player 2 wins")
+            lib.print_with_sep("player 2 wins")
 
 
 def online():
@@ -57,18 +57,18 @@ def online():
         x = lib.pick_compare(pick_1, pick_2)
 
         if x == 0:
-            print("draw")
+            lib.print_with_sep("draw")
         if x == 1:
-            print("player 1")
+            lib.print_with_sep("player 1")
             wins_player_1 += 1
         if x == 2:
-            print("player 2")
+            lib.print_with_sep("player 2")
             wins_player_2 += 1
 
         if wins_player_1 == 3:
-            print("player 1 wins")
+            lib.print_with_sep("player 1 wins")
         if wins_player_2 == 3:
-            print("player 2 wins")
+            lib.print_with_sep("player 2 wins")
 
 
 game_mode = lib.mode()

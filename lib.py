@@ -69,3 +69,7 @@ def mode():
     except Exception as ex:
         print(f"error: {ex}", file=sys.stderr)
         mode()
+
+
+def print_with_sep(prin):
+    print(os.linesep + prin + os.linesep)
