@@ -1,9 +1,7 @@
-import logging
 import random
 import lib
 import signal
 import sys
-import socket
 
 
 def signal_handler(_sign, _frame):

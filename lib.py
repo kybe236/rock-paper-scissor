@@ -1,10 +1,8 @@
 import logging
-import sys
 import time
 import getpass
 import os
 import socket
-
 import lib
 
 
@@ -45,14 +43,14 @@ def user_pick(user: int):
         x = int(getpass.getpass(f"player {user} : "))
 
         if x not in (1, 2, 3):
-            print("error: number is not in range ", file=sys.stderr)
+            logging.warning("number not in range")
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
             user_pick(user)
 
         return x
 
     except Exception as ex:
-        print(f"error: {ex}", file=sys.stderr)
+        logging.error(f"{ex}")
         user_pick(user)
 
 
@@ -64,14 +62,14 @@ def mode():
                       f"enter number: "))
 
         if x not in (1, 2, 3):
-            print("error: number is not in range ", file=sys.stderr)
+            logging.warning("number not in range")
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
             return mode()
 
         return x
 
     except Exception as ex:
-        print(f"error: {ex}", file=sys.stderr)
+        logging.error(f"{ex}")
         mode()
 
 
@@ -94,14 +92,14 @@ def input_server():
                         f"select number: "))
 
         if inp not in (1, 2):
-            print("error: number is not in range ", file=sys.stderr)
+            logging.warning("number not in range")
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
             return input_server()
 
         return inp
 
     except Exception as ex:
-        print(f"error: {ex}", file=sys.stderr)
+        logging.error(f"{ex}")
         input_server()
 
 
@@ -145,7 +143,7 @@ def client():
             return client_soc
 
         except Exception as ex:
-            print(f"connecting: {ex}")
+            logging.debug(f"loop: {ex}")
             time.sleep(0.1)
 
     wins_player_1 = 0
