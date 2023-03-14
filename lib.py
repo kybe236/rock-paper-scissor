@@ -66,7 +66,7 @@ def mode():
         if x not in (1, 2, 3):
             print("error: number is not in range ", file=sys.stderr)
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
-            mode()
+            return mode()
 
         return x
 
@@ -96,12 +96,13 @@ def input_server():
         if inp not in (1, 2):
             print("error: number is not in range ", file=sys.stderr)
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
-            input_server()
+            return input_server()
+
+        return inp
 
     except Exception as ex:
         print(f"error: {ex}", file=sys.stderr)
         input_server()
-    return inp
 
 
 def server():

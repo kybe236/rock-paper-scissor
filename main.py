@@ -60,8 +60,6 @@ def multiplayer():
 
 
 def online():
-    wins_player_1 = 0
-    wins_player_2 = 0
     server_type = lib.input_server()
     if server_type == 1:
         lib.server()
