@@ -1,9 +1,11 @@
+import logging
 import sys
 import time
 import getpass
 import os
 import socket
-import asyncio
+
+import lib
 
 
 def pick_compare(player1: int, player2: int):
@@ -58,9 +60,10 @@ def mode():
     try:
         x = int(input(f"computer: 1{os.linesep}"
                       f"multiplayer(2 player): 2{os.linesep}"
+                      f"server: 3{os.linesep}"
                       f"enter number: "))
 
-        if x not in (1, 2):
+        if x not in (1, 2, 3):
             print("error: number is not in range ", file=sys.stderr)
             time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
             mode()
@@ -72,7 +75,98 @@ def mode():
         mode()
 
 
+def ip_pick():
+    return str(input("ip: "))
+
+
 def print_with_sep(prin):
     print(os.linesep + prin + os.linesep)
 
 
+def get_ipv6():
+    return socket.getaddrinfo(socket.gethostname(), 9999, socket.AF_INET6)[0][4][0]
+
+
+def input_server():
+    try:
+        inp = int(input(f"server: 1{os.linesep}"
+                        f"connect: 2{os.linesep}"
+                        f"select number: "))
+
+        if inp not in (1, 2):
+            print("error: number is not in range ", file=sys.stderr)
+            time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
+            input_server()
+
+    except Exception as ex:
+        print(f"error: {ex}", file=sys.stderr)
+        input_server()
+    return inp
+
+
+def server():
+    ser = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+    ser.bind(("localhost", 1234))
+    ser.listen()
+
+    wins_player_1 = 0
+    wins_player_2 = 0
+    while (wins_player_1 < 3) and (wins_player_2 < 3):
+        pick_1 = user_pick(1)
+        client_c, addr = ser.accept()
+        client_c.send(str(pick_1).encode())
+        pick_2 = int(client_c.recv(1024).decode())
+
+        x = lib.pick_compare(pick_1, pick_2)
+
+        if x == 0:
+            lib.print_with_sep("draw")
+        if x == 1:
+            lib.print_with_sep("player 1")
+            wins_player_1 += 1
+        if x == 2:
+            lib.print_with_sep("player 2")
+            wins_player_2 += 1
+
+        if wins_player_1 == 3:
+            lib.print_with_sep("player 1 wins")
+        if wins_player_2 == 3:
+            lib.print_with_sep("player 2 wins")
+
+
+def client():
+    ip = ip_pick()
+
+    def connect_rec():
+        try:
+            client_soc = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+            client_soc.connect((f"{ip}", 1234, 0, 0))
+            return client_soc
+
+        except Exception as ex:
+            print(f"connecting: {ex}")
+            time.sleep(0.1)
+
+    wins_player_1 = 0
+    wins_player_2 = 0
+    while (wins_player_1 < 3) and (wins_player_2 < 3):
+        client_sock = connect_rec()
+        pick_1 = int(client_sock.recv(1024).decode())
+        pick_2 = lib.user_pick(2)
+        client_sock.send(str(pick_2).encode())
+
+        x = lib.pick_compare(pick_1, pick_2)
+
+        if x == 0:
+            lib.print_with_sep("draw")
+        if x == 1:
+            lib.print_with_sep("player 1")
+            wins_player_1 += 1
+        if x == 2:
+            lib.print_with_sep("player 2")
+            wins_player_2 += 1
+
+        if wins_player_1 == 3:
+            lib.print_with_sep("player 1 wins")
+        if wins_player_2 == 3:
+            lib.print_with_sep("player 2 wins")

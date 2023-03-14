@@ -1,9 +1,9 @@
-import os
+import logging
 import random
-import time
 import lib
 import signal
 import sys
+import socket
 
 
 def signal_handler(_sign, _frame):
@@ -59,10 +59,23 @@ def multiplayer():
             lib.print_with_sep("player 2 wins")
 
 
+def online():
+    wins_player_1 = 0
+    wins_player_2 = 0
+    server_type = lib.input_server()
+    if server_type == 1:
+        lib.server()
+    else:
+        lib.client()
+
+
 game_mode = lib.mode()
+
 
 match game_mode:
     case 1:
         computer()
     case 2:
         multiplayer()
+    case 3:
+        online()
