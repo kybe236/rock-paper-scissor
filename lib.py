@@ -83,7 +83,7 @@ def print_with_sep(prin):
 
 
 def get_ipv6():
-    return socket.getaddrinfo(socket.gethostname(), 9999, socket.AF_INET6)[0][4][0]
+    return socket.getaddrinfo(socket.gethostname(), 1234, socket.AF_INET6)[0][4][0]
 
 
 def input_server():
@@ -106,8 +106,10 @@ def input_server():
 
 def server():
     print(f"{get_ipv6()}")
+    ip = get_ipv6()
+    ip = ip.replace(":", ":")
     ser = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-    ser.bind((get_ipv6(), 1234))
+    ser.bind((ip, 1234))
     ser.listen()
 
     wins_player_1 = 0
