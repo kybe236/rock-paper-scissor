@@ -1,8 +1,9 @@
-import logging
-import time
 import getpass
+import logging
 import os
 import socket
+import time
+
 import lib
 
 
@@ -104,8 +105,9 @@ def input_server():
 
 
 def server():
+    print(f"{get_ipv6()}")
     ser = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-    ser.bind(("localhost", 1234))
+    ser.bind((get_ipv6(), 1234))
     ser.listen()
 
     wins_player_1 = 0
@@ -139,12 +141,13 @@ def client():
     def connect_rec():
         try:
             client_soc = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-            client_soc.connect((f"{ip}", 1234, 0, 0))
-            return client_soc
+            client_soc.connect((ip, 1234, 0, 0))
 
         except Exception as ex:
             logging.debug(f"loop: {ex}")
             time.sleep(0.1)
+            return connect_rec()
+        return client_soc
 
     wins_player_1 = 0
     wins_player_2 = 0

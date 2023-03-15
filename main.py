@@ -1,14 +1,27 @@
+import logging
 import random
-import lib
 import signal
 import sys
 
+import lib
 
-def signal_handler(_sign, _frame):
+
+def main():
+    signal.signal(signal.SIGINT, signal_handler)
+    game_mode = lib.mode()
+
+    match game_mode:
+        case 1:
+            computer()
+        case 2:
+            multiplayer()
+        case 3:
+            online()
+
+
+def signal_handler(sign, frame):
+    logging.debug(f"{sign} {frame}")
     sys.exit(0)
-
-
-signal.signal(signal.SIGINT, signal_handler)
 
 
 def computer():
@@ -64,14 +77,4 @@ def online():
     else:
         lib.client()
 
-
-game_mode = lib.mode()
-
-
-match game_mode:
-    case 1:
-        computer()
-    case 2:
-        multiplayer()
-    case 3:
-        online()
+main()
