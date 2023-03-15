@@ -4,8 +4,6 @@ import os
 import socket
 import time
 
-import lib
-
 
 def pick_compare(player1: int, player2: int):
     match player1:
@@ -107,7 +105,7 @@ def input_server():
 def server():
     print(f"{get_ipv6()}")
     ip = get_ipv6()
-    ip = ip.replace(":", ":")
+    ip = ip.strip()
     ser = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
     ser.bind((ip, 1234))
     ser.listen()
@@ -120,21 +118,21 @@ def server():
         client_c.send(str(pick_1).encode())
         pick_2 = int(client_c.recv(1024).decode())
 
-        x = lib.pick_compare(pick_1, pick_2)
+        x = pick_compare(pick_1, pick_2)
 
         if x == 0:
-            lib.print_with_sep("draw")
+            print_with_sep("draw")
         if x == 1:
-            lib.print_with_sep("player 1")
+            print_with_sep("player 1")
             wins_player_1 += 1
         if x == 2:
-            lib.print_with_sep("player 2")
+            print_with_sep("player 2")
             wins_player_2 += 1
 
         if wins_player_1 == 3:
-            lib.print_with_sep("player 1 wins")
+            print_with_sep("player 1 wins")
         if wins_player_2 == 3:
-            lib.print_with_sep("player 2 wins")
+            print_with_sep("player 2 wins")
 
 
 def client():
@@ -156,21 +154,21 @@ def client():
     while (wins_player_1 < 3) and (wins_player_2 < 3):
         client_sock = connect_rec()
         pick_1 = int(client_sock.recv(1024).decode())
-        pick_2 = lib.user_pick(2)
+        pick_2 = user_pick(2)
         client_sock.send(str(pick_2).encode())
 
-        x = lib.pick_compare(pick_1, pick_2)
+        x = pick_compare(pick_1, pick_2)
 
         if x == 0:
-            lib.print_with_sep("draw")
+            print_with_sep("draw")
         if x == 1:
-            lib.print_with_sep("player 1")
+            print_with_sep("player 1")
             wins_player_1 += 1
         if x == 2:
-            lib.print_with_sep("player 2")
+            print_with_sep("player 2")
             wins_player_2 += 1
 
         if wins_player_1 == 3:
-            lib.print_with_sep("player 1 wins")
+            print_with_sep("player 1 wins")
         if wins_player_2 == 3:
-            lib.print_with_sep("player 2 wins")
+            print_with_sep("player 2 wins")
