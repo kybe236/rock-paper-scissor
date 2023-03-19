@@ -246,8 +246,7 @@ def online():
     server_type = input_server()
     if server_type == 1:
         server()
-    else:
-        client()
+    client()
 
 
 main()
