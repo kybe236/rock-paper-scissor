@@ -8,6 +8,8 @@ import socket
 import sys
 import time
 
+import requests
+
 
 def main():
     signal.signal(signal.SIGINT, signal_handler)
@@ -153,6 +155,26 @@ def get_server_ip() -> str:
         return get_server_ip()
 
 
+def connect_or_create():
+    try:
+        inp = int(input(f"create server: 1{os.linesep}"
+                        f"connect server: 2{os.linesep}"
+                        f"enter: "))
+        if inp not in (1, 2):
+            logging.error("number not in range")
+            return connect_or_create()
+
+        inp2 = int(input(f"server code: "))
+
+        result = [inp, inp2]
+
+        return result
+
+    except Exception as ex:
+        logging.debug(ex)
+        return connect_or_create()
+
+
 def server():
     print(f"{get_ipv6()}")
     ip = get_ipv6()
@@ -232,11 +254,72 @@ def online():
 
 def web_server():
     ip = get_server_ip()
+    code_type, code = connect_or_create()
     player_1_wins = 0
     player_2_wins = 0
-    while (player_1_wins < 3) and (player_2_wins < 3):
-        # request are coming soo
-        print(f"{ip=}")
+    token = random.randrange(99999999999)
+
+    url = f"{ip}/{code}?"
+
+    first = True
+
+    if code_type == 1:
+        requests.get(f"{url}action=create")
+        requests.get(f"{url}action=token&token={token}")
+    else:
+        requests.get(f"{url}action=token&token={token}")
+    if code_type == 1:
+        while (player_1_wins < 3) and (player_2_wins < 3):
+            r = requests.get(f"{url}action=next")
+            while r.json() == {'next': 2}:
+                time.sleep(0.2)
+                r = requests.get(f"{url}action=next")
+            if first:
+                first = False
+            else:
+                with requests.get(f"{url}action=last_winner") as w:  # noqa
+                    w = w.json()
+                    if w == {'last_winner': 0}:
+                        print_with_sep("draw")
+                    if w == {'last_winner': 1}:
+                        print_with_sep("you won")
+                        player_1_wins += 1
+                    if w == {'last_winner': 2}:
+                        print_with_sep("enemy won")
+                        player_2_wins += 1
+            if player_1_wins == 3:
+                print_with_sep("you won the game")
+                sys.exit(0)
+            if player_2_wins == 3:
+                print_with_sep("enemy won the game")
+                sys.exit(0)
+            pick = user_pick(1)
+            requests.get(f"{url}action=play&token={token}&pick={pick}")
+
+    if code_type == 2:
+        while (player_1_wins < 3) and (player_2_wins < 3):
+            r = requests.get(f"{url}action=next")
+            while r.json() == {'next': 1}:
+                time.sleep(0.2)
+                r = requests.get(f"{url}action=next")
+            pick = user_pick(2)
+            requests.get(f"{url}action=play&token={token}&pick={pick}")
+            with requests.get(f"{url}action=last_winner") as w:  # noqa
+                w = w.json()
+                if w == {'last_winner': 0}:
+                    print_with_sep("draw")
+                if w == {'last_winner': 1}:
+                    print_with_sep("enemy won")
+                    player_1_wins += 1
+                if w == {'last_winner': 2}:
+                    print_with_sep("you won")
+                    player_2_wins += 1
+            if player_1_wins == 3:
+                print_with_sep("enemy won the game")
+                sys.exit(0)
+            if player_2_wins == 3:
+                print_with_sep("you won the game")
+                sys.exit(0)
 
 
 main()
