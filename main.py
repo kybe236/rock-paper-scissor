@@ -271,7 +271,7 @@ def web_server():
         while (player_1_wins < 3) and (player_2_wins < 3):
             r = requests.get(f"{url}action=next")
             while r.json() == {'next': 2}:
-                time.sleep(0.2)
+                time.sleep(0.5)
                 r = requests.get(f"{url}action=next")
             if first:
                 first = False
@@ -299,7 +299,7 @@ def web_server():
         while (player_1_wins < 3) and (player_2_wins < 3):
             r = requests.get(f"{url}action=next")
             while r.json() == {'next': 1}:
-                time.sleep(0.2)
+                time.sleep(0.5)
                 r = requests.get(f"{url}action=next")
             pick = user_pick(2)
             requests.get(f"{url}action=play&token={token}&pick={pick}")
