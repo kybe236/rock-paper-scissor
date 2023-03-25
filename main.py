@@ -7,7 +7,6 @@ import signal
 import socket
 import sys
 import time
-
 import requests
 
 
@@ -259,7 +258,7 @@ def web_server():
     player_2_wins = 0
     token = random.randrange(99999999999)
 
-    url = f"{ip}/{code}?"
+    url = f"{ip}/{code}/?"
 
     first = True
 
