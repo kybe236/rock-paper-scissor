@@ -20,6 +20,8 @@ def main():
             multiplayer()
         case 3:
             online()
+        case 4:
+            web_server()
 
 
 def signal_handler(sign, frame):
@@ -55,7 +57,7 @@ def pick_compare(player1: int, player2: int):
                     return 0
 
 
-def user_pick(user: int):
+def user_pick(user: int) -> int:
     print(f"1: rock{os.linesep}"
           f"2: paper{os.linesep}"
           f"3: scissor")
@@ -79,12 +81,13 @@ def mode():
     try:
         x = int(input(f"computer: 1{os.linesep}"
                       f"multiplayer(2 player): 2{os.linesep}"
-                      f"server: 3{os.linesep}"
+                      f"server(socket): 3{os.linesep}"
+                      f"public server: 4{os.linesep}"
                       f"enter number: "))
 
-        if x not in (1, 2, 3):
+        if x not in (1, 2, 3, 4):
             logging.warning("number not in range")
-            time.sleep(0.1)  # wait until stderr is printed (maybe a bug)
+            time.sleep(0.1)  # wait until stderr is printed
             return mode()
 
         return x
@@ -106,6 +109,21 @@ def get_ipv6():
     return socket.getaddrinfo(socket.gethostname(), 1234, socket.AF_INET6)[0][4][0]
 
 
+def compare(x: int, wins_player_1: int, wins_player_2: int) -> None:
+    if x == 0:
+        print_with_sep("draw")
+    if x == 1:
+        print_with_sep("player 1")
+        wins_player_1 += 1
+    if x == 2:
+        print_with_sep("player 2")
+        wins_player_2 += 1
+    if wins_player_1 == 3:
+        print_with_sep("player 1 wins")
+    if wins_player_2 == 3:
+        print_with_sep("player 2 wins")
+
+
 def input_server():
     try:
         inp = int(input(f"server: 1{os.linesep}"
@@ -121,7 +139,18 @@ def input_server():
 
     except Exception as ex:
         logging.error(f"{ex}")
-        input_server()
+        return input_server()
+
+
+def get_server_ip() -> str:
+    try:
+        inp = str(input(f"domain: Url, IPv4, IPv6{os.linesep}"
+                        f"enter domain: "))
+
+        return inp
+    except Exception as ex:
+        logging.error(f"{ex}")
+        return get_server_ip()
 
 
 def server():
@@ -142,19 +171,7 @@ def server():
 
         x = pick_compare(pick_1, pick_2)
 
-        if x == 0:
-            print_with_sep("draw")
-        if x == 1:
-            print_with_sep("player 1")
-            wins_player_1 += 1
-        if x == 2:
-            print_with_sep("player 2")
-            wins_player_2 += 1
-
-        if wins_player_1 == 3:
-            print_with_sep("player 1 wins")
-        if wins_player_2 == 3:
-            print_with_sep("player 2 wins")
+        compare(x, wins_player_1, wins_player_2)
 
 
 def client():
@@ -181,19 +198,7 @@ def client():
 
         x = pick_compare(pick_1, pick_2)
 
-        if x == 0:
-            print_with_sep("draw")
-        if x == 1:
-            print_with_sep("player 1")
-            wins_player_1 += 1
-        if x == 2:
-            print_with_sep("player 2")
-            wins_player_2 += 1
-
-        if wins_player_1 == 3:
-            print_with_sep("player 1 wins")
-        if wins_player_2 == 3:
-            print_with_sep("player 2 wins")
+        compare(x, pick_1, pick_2)
 
 
 def computer():
@@ -204,19 +209,7 @@ def computer():
         pick_2 = user_pick(2)
         x = pick_compare(pick_1, pick_2)
 
-        if x == 0:
-            print_with_sep("draw")
-        if x == 1:
-            print_with_sep("bot")
-            wins_player_1 += 1
-        if x == 2:
-            print_with_sep("player 2")
-            wins_player_2 += 1
-
-        if wins_player_1 == 3:
-            print_with_sep("bot wins")
-        if wins_player_2 == 3:
-            print_with_sep("player wins")
+        compare(x, pick_1, pick_2)
 
 
 def multiplayer():
@@ -227,19 +220,7 @@ def multiplayer():
         pick_2 = user_pick(2)
         x = pick_compare(pick_1, pick_2)
 
-        if x == 0:
-            print_with_sep("draw")
-        if x == 1:
-            print_with_sep("player 1")
-            wins_player_1 += 1
-        if x == 2:
-            print_with_sep("player 2")
-            wins_player_2 += 1
-
-        if wins_player_1 == 3:
-            print_with_sep("player 1 wins")
-        if wins_player_2 == 3:
-            print_with_sep("player 2 wins")
+        compare(x, pick_1, pick_2)
 
 
 def online():
@@ -247,6 +228,15 @@ def online():
     if server_type == 1:
         server()
     client()
+
+
+def web_server():
+    ip = get_server_ip()
+    player_1_wins = 0
+    player_2_wins = 0
+    while (player_1_wins < 3) and (player_2_wins < 3):
+        # request are coming soo
+        print(f"{ip=}")
 
 
 main()
