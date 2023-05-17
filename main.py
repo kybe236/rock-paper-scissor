@@ -147,7 +147,7 @@ def get_server_ip() -> str:
     try:
         inp = str(input(f"domain: Url, IPv4, IPv6(include http befor ip and use // for /){os.linesep}"
                         f"enter domain: "))
-        inp = inp.replace("/", "////")
+        inp = inp.replace("//", "////")
 
         return inp
     except Exception as ex:
