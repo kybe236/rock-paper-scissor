@@ -145,9 +145,9 @@ def input_server():
 
 def get_server_ip() -> str:
     try:
-        inp = str(input(f"domain: Url, IPv4, IPv6(include http or -s befor ip){os.linesep}"
+        inp = str(input(f"domain: Url, IPv4, IPv6 (include http or -s befor ip){os.linesep}"
                         f"enter domain: "))
-        inp = inp.replace("//", "////")
+        inp = inp.replace("//", "//")
 
         return inp
     except Exception as ex:
